@@ -5,14 +5,17 @@
 var http=require('http');
 var fs=require('fs');
 var mime=require('mime');
+var url=require('url');//对URL进行处理 把字符串转成对象
 /**
  *
  * @param request 请求
  * @param response 响应
  */
 function serve(request,response){
-    var url=request.url;
-    if(url=='/'){
+    //true 表示query转成对象
+    var urlObj=url.parse(request.url,true);
+    var pathname=urlObj.pathname;
+    if(pathname=='/'){
         //response.statusCode=200;  //状态
         response.setHeader('content-type','text/html;charset=utf-8')
         //response.setHeader('name','kevin');//设置响应头数据
@@ -21,12 +24,12 @@ function serve(request,response){
             response.end();
         })
     }else{
-        static(url,response);
+        static(pathname,response);
     }
 }
-function static(url,response){
-    response.setHeader('content-type',mime.lookup(url)+';charset=utf-8')
-    fs.readFile(url.slice(1),function (err,data) {
+function static(pathname,response){
+    response.setHeader('content-type',mime.lookup(pathname)+';charset=utf-8')
+    fs.readFile(pathname.slice(1),function (err,data) {
         response.write(data);
         response.end();
     })
