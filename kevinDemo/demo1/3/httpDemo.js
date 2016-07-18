@@ -10,4 +10,4 @@ var server=http.createServer(function(req,res){
     res.end();
 })
 
-server.listen(3000,'127.0.0.1.album');
+server.listen(3000,'127.0.0.1.exports');
