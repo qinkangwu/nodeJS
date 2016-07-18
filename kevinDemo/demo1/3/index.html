@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/index.css">
-    <script src='/index.js'></script>
 </head>
 <body>
-    hello world....
-<button id="btn">点我</button>
+<form action="http://127.0.0.1:3000" method="GET">
+    用户名: <input type="text" name="name">
+    年龄: <input type="text" name="age">
+    男: <input type="radio" name="gender" value="man">
+    女: <input type="radio" name="gender" value="woman">
+    <input type="submit" value="提交">
+</form>
 </body>
 </html>
