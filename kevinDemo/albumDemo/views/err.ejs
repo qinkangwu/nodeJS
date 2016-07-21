@@ -7,11 +7,7 @@
     <title>相册</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -37,18 +33,9 @@
     </div><!-- /.container-fluid -->
 </nav>
 <div class="container">
-    <div class="row">
-        <% for(var i=0;i<albums.length;i++){ %>
-        <div class="col-xs-6 col-md-3">
-            <a href="/<%= albums[i]%>/" class="thumbnail">
-                <img src="images/folder.png" alt="文件夹">
-            </a>
-            <h3 style='text-align: center'><%= albums[i]%></h3>
-        </div>
-        <%} %>
-    </div>
+    <h3><img src="/images/404.jpg" alt="" style="display: block;width: 100%;height:auto;"></h3>
 </div>
 <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

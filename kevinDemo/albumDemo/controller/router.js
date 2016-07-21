@@ -11,5 +11,12 @@ exports.showIndex=function(req,res){
     })
 };
 exports.showAlbumName=function(req,res){
-    res.send('相册名字是:'+req.params.albumName);
+    var allAlbums=req.params.albumName;
+    files.getImagesByAlbumName(allAlbums,function(AllImages){
+        res.render('albums',{
+            'albumName':allAlbums,
+            'images':AllImages
+        })
+    })
+
 };
