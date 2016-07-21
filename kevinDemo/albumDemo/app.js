@@ -9,7 +9,9 @@ app.set('view engine','ejs');
 app.use(express.static('./public'));
 app.use(express.static('./uploads'));
 app.get('/',controller.showIndex);
+app.get('/up',controller.showUp);
 app.get('/:albumName',controller.showAlbumName);
+app.post('/up',controller.doPost);
 app.use(function(req,res){
     //console.log(req.pathname);
     res.render('err');
