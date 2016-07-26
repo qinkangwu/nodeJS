@@ -4,7 +4,7 @@ var formidable = require('formidable');
 var db=require('./model/db.js');
 var ObjectId = require('mongodb').ObjectID;
 
-main.set('view engine','ejs');
+main.set('views engine','ejs');
 main.use(express.static('./public'));
 main.get('/',function(req,res){
     db.getAllCount('messageWarp',function(count){
