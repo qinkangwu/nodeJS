@@ -2,11 +2,23 @@ var express=require('express');
 var main=express();
 var formidable = require('formidable');
 var db=require('./model/db.js');
+var ObjectId = require('mongodb').ObjectID;
 
 main.set('view engine','ejs');
 main.use(express.static('./public'));
 main.get('/',function(req,res){
-    res.render('index');
+    db.getAllCount('messageWarp',function(count){
+        res.render('index',{
+            'pageAmount':Math.ceil(count/5)
+        });
+    })
+
+})
+main.get('/delete',function(req,res){
+    var id=req.query.id;
+    db.delete('messageWarp',{'_id':ObjectId(id)},function(err,result){
+        res.redirect()
+    })
 })
 main.get('/getMessage',function(req,res){
     var page=req.query.page;

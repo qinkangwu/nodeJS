@@ -50,11 +50,9 @@
     </div>
     <nav>
         <ul class="pagination">
-            <li class="pageBtn active" data-page="1"><a href="#">1</a></li>
-            <li class="pageBtn" data-page="2"><a href="#">2</a></li>
-            <li class="pageBtn" data-page="3"><a href="#">3</a></li>
-            <li class="pageBtn" data-page="4"><a href="#">4</a></li>
-            <li class="pageBtn" data-page="5"><a href="#">5</a></li>
+            <% for(var i=0;i<pageAmount;i++){%>
+            <li class="pageBtn" data-page="<%=i+1%>"><a href="#"><%=i+1%></a></li>
+            <%}%>
         </ul>
     </nav>
     <div id="allMessage">
@@ -67,11 +65,12 @@
 <script src="js/underscore.js"></script>
 <script type="text/template" id="underMessageWarp">
     <div class="list-group">
-        <a href="#" class="list-group-item active">
+        <div href="#" class="list-group-item active">
             <h4 class="list-group-item-heading">姓名：{{= username}}</h4>
             <p class="list-group-item-text">留言：{{= message}}</p>
             <p class="list-group-item-text">时间：{{= date}}</p>
-        </a>
+            <p><a href="/delete?id={{=id}}" class="deleteBtn" style="color:#fff" data-id="{{=id}}">删除</a></p>
+        </div>
     </div>
 </script>
 <script type="text/javascript">
@@ -79,7 +78,12 @@
         $.get('/getMessage?page='+(page-1),function(result){
             var compiled=_.template($('#underMessageWarp').html());
             for(var i=0;i<result.result.length;i++){
-                var html=compiled({username:result.result[i].username,message:result.result[i].message,date:result.result[i].date});
+                var html=compiled({
+                    username:result.result[i].username,
+                    message:result.result[i].message,
+                    date:result.result[i].date,
+                    id:result.result[i]._id
+                });
                 $('#allMessage').prepend($(html));
             }
 
@@ -103,11 +107,15 @@
             }else if(result==='1'){
                 $('#error').stop().fadeOut();
                 $('#success').stop().fadeIn();
+                setTimeout(function(){
+                    $('#success').stop().fadeOut();
+                },2000)
                 $('#allMessage').html('');
                 getAllMessageFn(1);
             }
         })
     })
+    $('.pagination li').eq(0).addClass('active').siblings('li').removeClass('active');
 </script>
 </body>
 </html>
