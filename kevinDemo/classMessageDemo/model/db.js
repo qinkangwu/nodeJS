@@ -129,7 +129,11 @@ exports.getAllCount=function(collectionName,callback){
 }
 
 
-
+/**
+ * MD5加密函数
+ * @param password 需要加密的密码
+ * @param callback  加密后的回调
+ */
 exports.md5=function(password,callback){
     var md5=crypto.createHash('md5');
     var password=md5.update(password).digest('base64');

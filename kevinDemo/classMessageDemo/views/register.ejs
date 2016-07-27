@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/favicon.ico">
+
+    <title>用户注册</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/css/index.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+</head>
+
+<body>
+<% include header.ejs%>
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <h1>注册</h1>
+            <div class="form-group">
+                <label for="username">用户名：</label>
+                <input type="text" class="form-control" id="username" placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="password">密码：</label>
+                <input type="password" class="form-control" id="password" placeholder="请输入密码">
+            </div>
+            <button type="submit" class="btn btn-default" id="submitBtn">提交数据</button>
+        </div>
+    </div>
+</div>
+
+<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+    $('#submitBtn').click(function(){
+        $.post('/doRegister',{
+            'username':$('#username').val(),
+            'password':$('#password').val()
+        },function(result){
+            if(result==='1'){
+                //注册成功
+                alert('注册成功,回到首页');
+                window.location.href='/';
+            }else if(result==='-3'){
+                //服务器错误
+                alert('服务器错误')
+            }else if(result==='-2'){
+                //用户名存在
+                alert('用户名存在');
+            }
+        })
+    })
+</script>
+</body>
+</html>
