@@ -21,11 +21,15 @@ main.use(express.static('./avatar'));
 main.get('/',router.showIndex);
 main.get('/register',router.showRegister);
 main.get('/login',router.showLogin);
+main.get('/setAvatar',router.showSetAvatar);
+main.get('/cutPic',router.showCutPic);
+main.get('/doCutPic',router.doCutPic);
 
 
 //接受请求处理
 main.post('/doRegister',router.doRegister);
 main.post('/doLogin',router.doLogin);
+main.post('/doSetAvatar',router.doSetAvatar);
 
 //监听
 main.listen(3000);

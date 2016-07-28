@@ -1,12 +1,38 @@
 var formidable = require('formidable');
 var db = require('../model/db.js');
+var fs=require('fs');
+var gm=require('gm');
 
 //显示首页
 exports.showIndex=function(req,res){
-    res.render('index',{
-        'login' : req.session.login==='1'?true:false,
-        'username':req.session.login==='1'?req.session.username:''
-    });
+    if(req.session.login=='1'){
+        var login=true;
+        var username=req.session.username;
+    }else{
+        var login=false;
+        var username='';
+    }
+        db.find('user',{
+            'username':username
+        },function(err,result){
+            if(err){
+                return;
+            }
+            if(result.length==0){
+                var avatar='moren.jpg';
+            }else{
+                var avatar=result[0].avatar;
+            }
+
+            res.render('index',{
+                'login' : login,
+                'username':username,
+                'avatar':avatar
+            });
+            return;
+        })
+
+
 }
 
 //显示注册页面
@@ -23,6 +49,18 @@ exports.showLogin=function(req,res){
     res.render('login',{
         'login' : req.session.login==='1'?true:false,
         'username':req.session.login==='1'?req.session.username:''
+    });
+}
+
+//显示设置头像页
+exports.showSetAvatar=function(req,res){
+    if(req.session.login!='1'){
+        res.send('请登录后操作');
+        return;
+    }
+    res.render('setAvatar',{
+        'login' : true,
+        'username':req.session.username
     });
 }
 
@@ -49,7 +87,8 @@ exports.doRegister=function(req,res){
                     //不存在，做插入操作
                     db.insert('user',{
                         'username':username,
-                        'password':password
+                        'password':password,
+                        'avatar':'moren.jpg'
                     },function(err,result){
                         if(err){
                             res.send('-3');
@@ -101,3 +140,67 @@ exports.doLogin=function(req,res){
 
     return;
 }
+
+
+//上传头像操作
+exports.doSetAvatar=function(req,res){
+    var form =new formidable.IncomingForm();
+    form.uploadDir='./avatar/';
+    form.parse(req,function(err,fields,files){
+        //处理图片
+        var oldPath=files.avatar.path;
+        var newPath='./avatar/'+req.session.username+'.jpg';
+        fs.rename(oldPath,newPath,function(err){
+            if(err){
+                res.send('出错了');
+                return;
+            }
+
+            //缓存图片名称
+            req.session.avatar=req.session.username+'.jpg';
+            res.redirect('/cutPic');
+        })
+    });
+    return;
+}
+
+
+//显示剪切页面
+exports.showCutPic=function(req,res){
+    res.render('cut',{
+        'avatar':req.session.avatar
+    });
+}
+
+
+
+//剪切图片
+exports.doCutPic=function(req,res,next){
+    //这个页面接收几个GET请求参数
+    //文件名、w、h、x、y
+    var filename = req.session.avatar;
+    var w = req.query.w;
+    var h = req.query.h;
+    var x = req.query.x;
+    var y = req.query.y;
+
+    //剪裁
+    gm("./avatar/"+filename)
+        .crop(w,h,x,y)
+        .resize(100,100,"!")
+        .write("./avatar/"+filename,function(err){
+            if(err){
+                res.send("-1");
+                return;
+            }
+            //写入数据库
+            db.update('user',{'username':req.session.username},{$set:{'avatar':filename}},function(err,result){
+                if(err){
+                    throw new Error('改头像失败');
+                }
+                //跳转回首页
+                res.send('1');
+                return;
+            })
+        });
+};
