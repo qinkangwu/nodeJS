@@ -141,4 +141,24 @@ exports.md5=function(password,callback){
     return;
 }
 
+/**
+ * 数据库初始化
+ */
+function init(){
+    __connectDB(function(err,db){
+        if(err){
+            console.log(err);
+            return;
+        }
+        db.collection('user').createIndex(
+            {'username':1},
+            null,
+            function(err,result){
+                console.log('索引建立成功');
+            }
+        )
+    })
+}
+init();
+
 

@@ -55,7 +55,7 @@ exports.showLogin=function(req,res){
 //显示设置头像页
 exports.showSetAvatar=function(req,res){
     if(req.session.login!='1'){
-        res.send('请登录后操作');
+        res.redirect('/login')
         return;
     }
     res.render('setAvatar',{
