@@ -204,3 +204,74 @@ exports.doCutPic=function(req,res,next){
             })
         });
 };
+
+
+//处理发表说说业务
+exports.doSendContent=function(req,res){
+    //需要登录
+    if(req.session.login!='1'){
+        res.redirect('/login')
+        return;
+    }
+    var form = new formidable.IncomingForm();
+
+    form.parse(req, function(err, fields, files) {
+        var content=fields.content;
+        var username=req.session.username;
+        db.insert('contents',{
+            'username':username,
+            'dateTime':new Date(),
+            'content':content
+        },function(err,result){
+            if(err){
+                res.send('-3');
+                return;
+            }
+            res.send('1');
+        })
+    });
+
+    return;
+}
+
+
+
+//列出所有说说
+exports.getAllContents=function(req,res){
+    var page=req.query.page;
+    db.find('contents',{},{'pageAmount':12,'page':page,'sort':{'dateTime':-1}},function(err,result){
+        res.json({'r':result});
+    })
+}
+
+//查询用户信息
+exports.getUserInfo=function(req,res){
+    var username=req.query.username;
+    db.find('user',{'username':username},function(err,result){
+        res.json({'r':result});
+    })
+}
+
+//查询内容总数
+exports.getContentCount=function(req,res){
+    db.getAllCount('contents',function(count){
+        res.send(count.toString());
+    })
+}
+
+//获取个人信息
+exports.showUser=function(req,res){
+    var user=req.params['user'];
+    db.find('contents',{'username':user},function(err,result){
+        db.find('user',{'username':user},function(err,result2){
+            res.render('user',{
+                'login' : req.session.login==='1'?true:false,
+                'username':req.session.login==='1'?req.session.username:'',
+                'user':user,
+                'contents':result,
+                'avatar':result2[0].avatar
+            });
+        })
+
+    })
+}
