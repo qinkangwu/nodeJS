@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <style>
+        table,tr,td{
+            border:1px solid #abcdef;
+        }
+        td{
+            width:200px;
+            line-height:40px;
+            height:40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<a href="/add">添加学生</a>
+<table>
+    <tr>
+        <td>姓名</td>
+        <td>年龄</td>
+        <td>性别</td>
+        <td>报班</td>
+        <td colspan="2">操作</td>
+    </tr>
+    <%for(var i=0;i<students.length;i++){%>
+    <tr>
+        <td><%=students[i].name%></td>
+        <td><%=students[i].age%></td>
+        <td><%=students[i].gender%></td>
+        <td><%=students[i].course%></td>
+        <td><a href="/update/<%=students[i]._id%>">修改</a></td>
+        <td><a href="/remove/<%=students[i]._id%>">删除</a></td>
+    </tr>
+    <%}%>
+</table> 
+</body>
+</html>
