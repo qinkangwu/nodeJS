@@ -20,6 +20,9 @@ exports.add=function(req,res){
 exports.doAdd=function(req,res){
     console.log(req.query);
     Student.create(req.query,function(err,result){
+        Course.addStudent(req.query.course,req.query.name,function(){
+
+        });
         console.log('数据插入成功');
         res.redirect('/');
     })
@@ -29,9 +32,13 @@ exports.doAdd=function(req,res){
 exports.update=function(req,res){
     var _id = req.params['_id'];
     Student.findOne({'_id':_id},function(err,student){
-        res.render('update',{
-            'student':student
+        Course.find({},function(err,result2){
+            res.render('update',{
+                'student':student,
+                'allCourse':result2
+            })
         })
+
     })
 
 };
