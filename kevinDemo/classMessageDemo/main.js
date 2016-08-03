@@ -12,7 +12,7 @@ main.use(session({
     saveUninitialized: true
 }))
 //设置默认模板引擎
-main.set('views engine','ejs');
+main.set('view engine','ejs');
 //静态化
 main.use(express.static('./public'));
 main.use(express.static('./avatar'));
