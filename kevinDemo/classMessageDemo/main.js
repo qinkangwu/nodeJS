@@ -1,7 +1,7 @@
 //引模块
 var express=require('express');
 var router=require('./router/router.js');
-var session = require('express-session')
+var session = require('express-session');
 //初始化
 var main=express();
 
