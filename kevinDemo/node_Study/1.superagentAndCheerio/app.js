@@ -7,7 +7,7 @@ var app = express();
 
 app.get('/',function(req,res,next){
     //通过服务器发送http请求
-    superAgent.get('http://www.hiniu.com/today/all')
+    superAgent.get('https://cnodejs.org/')
         //错误处理 data储存了相应html
         .end(function(err,data){
             if(err){
@@ -16,10 +16,10 @@ app.get('/',function(req,res,next){
             //把返回数据转换成html
             var $ = cheerio.load(data.text);
             var items = [];
-            $('.row .detailed .title a').each(function(index,elem){
+            $('#topic_list .topic_title').each(function(index,elem){
                 items.push({
-                    'title' : $(this).text(),
-                    'href'  : 'http://www.hiniu.com'+$(this).attr('href')
+                    'title' : $(this).attr('title'),
+                    'href'  : 'https://cnodejs.org'+$(this).attr('href')
                 })
             })
             res.send(items);
