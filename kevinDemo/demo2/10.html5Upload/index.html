@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传文件</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <label for="fileUpload">请选择上传文件</label>
+                <input class="form-control" type="file" name="fileUpload" id="fileUpload" onchange="fileSelect()">
+            </div>
+            <div class="form-group">
+                <input type="button" class="btn btn-success" value="上传文件" onclick="uploadFile()">
+            </div>
+            <div>
+                <table class="table table-striped">
+                    <tr>
+                        <td>文件名</td>
+                        <td>文件大小</td>
+                        <td>文件类型</td>
+                    </tr>
+                    <tr>
+                        <td id="fileName"></td>
+                        <td id="fileSize"></td>
+                        <td id="fileType"></td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table class="table table-striped">
+                    <tr>
+                        <td>当前速度</td>
+                        <td>剩余时间估算</td>
+                        <td>当前进度</td>
+                    </tr>
+                    <tr>
+                        <td id="speed"></td>
+                        <td id="remaining"></td>
+                        <td id="stage"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" id="progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        function change(size){
+            console.log(size);
+            var fileSize = 0;
+            if(size>1024*1024){
+                fileSize = Math.round(size/(1024*1024))+'MB';
+            }else if(size<1024*1024){
+                fileSize = Math.round(size/(1024))+'KB';
+            }
+            return fileSize;
+        }
+        function fileSelect(){
+            document.querySelector('#progressbar')['aria-valuenow']=0;
+            document.querySelector('#progressbar').style.width = 0+'%';
+            var file = document.querySelector('#fileUpload').files[0];
+            if(file){
+                document.querySelector('#fileName').innerHTML=file.name;
+                document.querySelector('#fileSize').innerHTML=change(file.size);
+                document.querySelector('#fileType').innerHTML=file.type;
+            }
+        }
+        var success = error = abort =function(){};
+        var last = 0;
+        function progress(event){
+            console.log(event);
+            console.log(event.loaded);
+            console.log(event.total);
+            var percent = Math.round(event.loaded*100/event.total);
+            document.querySelector('#progressbar')['aria-valuenow']=percent;
+            document.querySelector('#progressbar').style.width = percent+'%';
+            var diff = event.loaded - last;
+            last = event.loaded;
+            document.querySelector('#speed').innerHTML = change(diff);
+            document.querySelector('#stage').innerHTML = change(event.loaded);
+            document.querySelector('#remaining').innerHTML = ((event.total-event.loaded)/diff).toFixed(0)+'秒';
+        };
+        function uploadFile(){
+            var fd = new FormData();
+            var file = document.querySelector('#fileUpload').files[0];
+            fd.append('fileUpload',file);
+            var xhr = new XMLHttpRequest();
+            xhr.upload.addEventListener('progress',progress,false);
+            xhr.addEventListener('load',success,false);
+            xhr.addEventListener('error',error,false);
+            xhr.addEventListener('abort',abort,false);
+            xhr.open('POST','/post');
+            xhr.send(fd);
+        }
+
+    </script>
+</body>
+</html>
