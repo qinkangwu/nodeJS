@@ -12,7 +12,7 @@ app.use(proxyPass({
 }));
 function proxyPass(config){
     return function(req,res,next){
-        var target = config['www.kevin.com'];
+        var target = config[req.hostname];
         proxy.web(req,res,{
             target:target
         });
