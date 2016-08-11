@@ -31,13 +31,13 @@ app.use(session({
   resave : true,
   store  : new MongoStore({url : 'mongodb://127.0.0.1:27017/kevin'})
 }));
+app.use(flash());
 app.use(function(req,res,next){
   res.locals.user = req.session.user;
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success').toString();
+  res.locals.error = req.flash('error').toString();
   next();
 });
-app.use(flash());
 app.use('/', routes);
 app.use('/users', users);
 app.use('/articles', articles);
