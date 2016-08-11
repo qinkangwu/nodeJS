@@ -90,7 +90,7 @@
             var amount=parseInt(result);
             var pageAmount=Math.ceil(amount/12);
             for(var i = 0 ; i < pageAmount ; i++){
-                $('.pagination').append("<li><a href='javascript:;' dataNums="+i+">"+(i+1)+"</a></li>")
+                $('.pagination').append("<li><a href='javascripts:;' dataNums="+i+">"+(i+1)+"</a></li>")
             }
             $('.pagination li a').click(function(event){
                 $('#allContent').html('');

@@ -1,0 +1,20 @@
+{
+  "name": "blogDemo",
+  "description": "this is a blog",
+  "main": "",
+  "authors": [
+    "qinkangwu <18602182076@163.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/qinkangwu/nodeJS",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
