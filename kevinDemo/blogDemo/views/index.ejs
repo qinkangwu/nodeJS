@@ -9,8 +9,8 @@
             </a>
         </div>
         <div class="media-body">
-            <h4 class="media-heading"><%=article.title%></h4>
-            <p><%=article.content%></p>
+            <h4 class="media-heading"><a href="/articles/detail/<%=article._id%>"><%=article.title%></a></h4>
+            <div><%-article.content%></div>
         </div>
     </div>
 </div>
