@@ -12,7 +12,37 @@ var storage = multer.diskStorage({
     }
 })
 
-var upload = multer({ storage: storage })
+var upload = multer({ storage: storage });
+
+router.get('/list/:pageNum/:pageSize',function(req, res, next) {
+    var query = {};
+    var pageNum = parseInt(req.params.pageNum);
+    var pageSize = parseInt(req.params.pageSize);
+    if(req.query.keyword){
+        req.session.keyword = req.query.keyword;
+        query.title = new RegExp(req.query.keyword,'i');
+    }
+    Model('Article').count(query,function(err,result){
+        Model('Article').find(query).skip((pageNum-1)*pageSize).limit(pageSize).sort({createDate:-1}).populate('user').exec(function(err,articles){
+            if(err){
+                return next();
+            }
+            articles.forEach(function(article){
+                article.content = markdown.toHTML(article.content);
+            });
+            res.render('index',{
+                'title':'首页',
+                'articles' : articles,
+                'keyword'  : req.query.keyword,
+                'pageNum'  : pageNum,
+                'pageSize' : pageSize,
+                'totalPage': Math.ceil(result/pageSize)
+            });
+        })
+    });
+});
+
+
 //添加文章
 router.get('/add',function(req,res,next){
     if(!req.session.user){
@@ -73,9 +103,13 @@ router.post('/add',function(req,res,next){
         article.img = path.join('/uploads/'+req.file.filename);
     }
     if(_id){
-        Model('Article').findByIdAndUpdate(_id,{
-
-        },function(err,doc){
+        var update = {
+            title:article.title,content:article.content
+        };
+        if(article.img){
+            update.img = article.img;
+        }
+        Model('Article').findByIdAndUpdate(_id,{$set:update},function(err,doc){
             if(err || !article){
                 req.flash('error','文章读取失败');
                 return res.redirect('back');
@@ -86,15 +120,30 @@ router.post('/add',function(req,res,next){
     }else{
         var user = req.session.user;
         article.user = user._id;
+        delete article._id;
         new Model('Article')(article).save(function(err,doc){
             if(err){
                 req.flash('error','文章发表失败');
                 res.redirect('back');
+            }else{
+                req.flash('success','文章发表成功');
+                res.redirect('/');
             }
-            req.flash('success','文章发表成功');
-            res.redirect('/');
         });
     }
+});
+
+
+router.get('/delete/:_id',function(req, res, next) {
+    var _id = req.params['_id'];
+    Model('Article').findByIdAndRemove(_id,function(err,result){
+        if(err){
+            req.flash('error','删除文章失败');
+            return res.redirect('back');
+        }else{
+            res.redirect('/');
+        }
+    });
 });
 
 
