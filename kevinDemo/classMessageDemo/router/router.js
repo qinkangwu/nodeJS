@@ -240,9 +240,10 @@ exports.doSendContent=function(req,res){
 exports.getAllContents=function(req,res){
     var page=req.query.page;
     db.find('contents',{},{'pageAmount':12,'page':page,'sort':{'dateTime':-1}},function(err,result){
+        console.log(result);
         res.json({'r':result});
     })
-}
+};
 
 //查询用户信息
 exports.getUserInfo=function(req,res){

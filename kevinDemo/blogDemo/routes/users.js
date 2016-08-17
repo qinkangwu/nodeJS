@@ -36,7 +36,7 @@ router.post('/register',function(req,res,next){
   new Model('User')(user).save(function(err,doc){
         if(err){
             req.flash('success','注册失败');
-            return res.redirect('back');
+            res.redirect('back');
         }else{
             req.session.user = doc;
             req.flash('success','注册成功');
@@ -73,11 +73,11 @@ router.post('/login',function(req,res,next){
       console.log(doc);
       if(!doc[0]){
           req.flash('error','用户名不存在');
-          return res.redirect('back');
+          res.redirect('back');
       }
       if(doc[0].password != password){
           req.flash('error','密码错误');
-          return res.redirect('back');
+          res.redirect('back');
       }
       req.flash('success','登录成功');
       req.session.user = doc[0];

@@ -5,7 +5,7 @@ var express=require('express');
 var app=express();
 var controller=require('./controller/router.js');
 
-app.set('views engine','ejs');
+app.set('view engine','ejs');
 app.use(express.static('./public'));
 app.use(express.static('./uploads'));
 app.get('/',controller.showIndex);

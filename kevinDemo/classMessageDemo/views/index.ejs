@@ -111,9 +111,6 @@
 
     <hr>
 
-    <footer>
-        <p>&copy; Company 2014</p>
-    </footer>
 </div>
 <script type="text/template" id="contentModule">
     <div class="col-md-4 grid">
@@ -146,15 +143,16 @@
                         'type':'get',
                         'success':function(result2){
                             result.r[i].avatar=result2.r[0].avatar;
+                            console.log(i);
                             //组装字典
 
-                            console.log(result.r[i]);
+                            console.log(result2.r[i]);
                             var htmlString=compiled(result.r[i]);
                             $('#allContent').append($(htmlString));
-                            iterator(i+1);
                         }
 
                     })
+                    iterator(i+1);
                 }
             }
         })
