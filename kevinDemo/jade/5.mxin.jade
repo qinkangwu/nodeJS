@@ -1,0 +1,11 @@
+doctype html
+head
+    title hello world
+    script.
+        var age = 23;
+body
+    mixin say(word)
+        p say#{word}
+    +say('a')
+    +say('b')
+    +say('c')

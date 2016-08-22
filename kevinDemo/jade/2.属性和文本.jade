@@ -1,0 +1,22 @@
+doctype html
+html
+    head
+        title hello world
+        style.
+            body {color:red;}
+        script.
+            var name = 'kevin';
+            console.log(name);
+            window.onload=function(){
+                document.getElementById('elem').onclick=function(){
+                    alert(this.innerHTML);
+                }
+            }
+    body
+        div
+            h1#elem.class1.class2(flag='true') kevin
+        div
+            a(href="http://www.baidu.com",target='_blank') baidu
+        div#content
+            | hello
+            | world
