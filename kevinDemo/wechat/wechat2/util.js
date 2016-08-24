@@ -51,14 +51,14 @@ exports.formatMessage = formatMessage ;
 
 exports.tpl = function(content,message){
     var info = {};
-    var type = 'text';
+    var type = content.type || 'text';
     var fromUserName = message.FromUserName;
     var toUserName = message.ToUsername;
 
     if(Array.isArray(content)){
         type = 'news';
     }
-    type = content.type || type;
+
 
     info.content = content;
     info.createTime = new Date().getTime();
