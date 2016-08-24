@@ -51,20 +51,20 @@ exports.formatMessage = formatMessage ;
 
 exports.tpl = function(content,message){
     var info = {};
-    var type = content.type || 'text';
+    //console.log('内容是'+content);
+    //console.log('内容长度为'+content.length);
+    var type = 'text';
+    console.log('message='+JSON.stringify(message));
     var fromUserName = message.FromUserName;
-    var toUserName = message.ToUsername;
-
+    var toUserName = message.ToUserName;
     if(Array.isArray(content)){
         type = 'news';
     }
-
-
     info.content = content;
     info.createTime = new Date().getTime();
     info.msgType = type;
     info.toUserName = fromUserName;
     info.fromUserName = toUserName;
-
+    console.log('info='+JSON.stringify(info))
     return tpl.compile(info);
 };

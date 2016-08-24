@@ -35,16 +35,16 @@ var temp = heredoc(function(){/*
             <ThumbMediaId><![CDATA[<%= content.ThumbMediaId%>]]></ThumbMediaId>
         </Music>
     <% }else if(msgType === 'news'){ %>
-        <ArticleCount><%= content.length %></ArticleCount>
+        <ArticleCount><%= content.length%></ArticleCount>
         <Articles>
-            <% content.forEach(function(item){ %>
+            <% for(var j=0 ; j<content.length;j++){ %>
                 <item>
-                <Title><![CDATA[<%= item.title%>]]></Title>
-                <Description><![CDATA[<%= item.description%>]]></Description>
-                <PicUrl><![CDATA[<%= item.picUrl%>]]></PicUrl>
-                <Url><![CDATA[<%= item.url%>]]></Url>
+                <Title><![CDATA[<%= content[j].title%>]]></Title>
+                <Description><![CDATA[<%= content[j].description%>]]></Description>
+                <PicUrl><![CDATA[<%= content[j].picUrl%>]]></PicUrl>
+                <Url><![CDATA[<%= content[j].url%>]]></Url>
                 </item>
-            <% }) %>
+            <% } %>
         </Articles>
     <% } %>
 </xml>

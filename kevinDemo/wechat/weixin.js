@@ -27,13 +27,26 @@ exports.reply=function* (next){
 
     }else if(message.MsgType === 'text'){
         var content = message.Content;
-        var reply = '二毛敲的代码太辣鸡了，无法理解你输入的'+message.Content+'指令';
+        var reply = '二毛敲的代码太辣鸡了，无法理解你输入的'+message.Content+'指令,输入1或者2或者我爱你试试';
 
         if(content === '1'){
             reply = '你是一个草包';
         }else if(content === '2'){
-            
+            reply = '你们是两个草包'
+        }else if(content === '4'){
+            reply = [{
+                title :'哦',
+                description : '描述。。。。。',
+                picUrl : 'http://img.woyaogexing.com/touxiang/katong/20131031/2d547b4967837e02.jpg!200X200.jpg',
+                url : 'http://www.baidu.com'
+            },{
+                title :'nodeJS 开发微信',
+                description : '描述。。。。。',
+                picUrl : 'http://img.woyaogexing.com/touxiang/katong/20131031/2d547b4967837e02.jpg!200X200.jpg',
+                url : 'http://www.baidu.com'
+            }]
         }
+        this.body = reply;
     }
 
     yield next;
