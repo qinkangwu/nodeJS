@@ -54,11 +54,17 @@ exports.tpl = function(content,message){
     //console.log('内容是'+content);
     //console.log('内容长度为'+content.length);
     var type = 'text';
-    console.log('message='+JSON.stringify(message));
+    console.log(content);
     var fromUserName = message.FromUserName;
     var toUserName = message.ToUserName;
     if(Array.isArray(content)){
         type = 'news';
+    }
+    if(content.type === 'image'){
+        type = 'image';
+    }
+    if(content.type === 'video'){
+        type = 'video';
     }
     info.content = content;
     info.createTime = new Date().getTime();

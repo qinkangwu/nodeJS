@@ -1,8 +1,13 @@
 'use strict';
 
+var config = require('./config');
+var Wechat = require('./wechat2/wechat.js');
+
+var wechatApi = new Wechat(config.wechat);
+
 exports.reply=function* (next){
     var message = this.weixin;
-    console.log('message='+message);
+    //console.log('message='+message);
     if(message.MsgType === 'event'){
 
         if(message.Event === 'subscribe'){
@@ -27,13 +32,13 @@ exports.reply=function* (next){
 
     }else if(message.MsgType === 'text'){
         var content = message.Content;
-        var reply = '二毛敲的代码太辣鸡了，无法理解你输入的'+message.Content+'指令,输入1或者2或者我爱你试试';
+        var reply = '二毛敲的代码太辣鸡了，无法理解你输入的'+message.Content+'指令,输入1,2,3,4';
 
         if(content === '1'){
             reply = '你是一个草包';
         }else if(content === '2'){
             reply = '你们是两个草包'
-        }else if(content === '4'){
+        }else if(content === '3'){
             reply = [{
                 title :'哦',
                 description : '描述。。。。。',
@@ -45,6 +50,22 @@ exports.reply=function* (next){
                 picUrl : 'http://img.woyaogexing.com/touxiang/katong/20131031/2d547b4967837e02.jpg!200X200.jpg',
                 url : 'http://www.baidu.com'
             }]
+        }else if(content === '4'){
+            var data = yield wechatApi.uploadMaterial('image',__dirname+'/2.jpg');
+            //console.log(data);
+            reply = {
+                type : 'image',
+                mediaId : data.media_id
+            }
+        }else if(content === '5'){
+            var data = yield wechatApi.uploadMaterial('video',__dirname+'/5.mp4');
+            console.log(data)
+            reply = {
+                type : 'video',
+                title : '回复视频内容',
+                description : '小视频',
+                mediaId : data.media_id
+            }
         }
         this.body = reply;
     }
