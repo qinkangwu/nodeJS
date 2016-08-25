@@ -66,6 +66,31 @@ exports.reply=function* (next){
                 description : '小视频',
                 mediaId : data.media_id
             }
+        }else if(content === '6'){
+            var data = yield wechatApi.uploadMaterial('image',__dirname+'/2.jpg');
+            reply = {
+                type : 'music',
+                title : '回复音乐内容',
+                description : '失落沙洲',
+                musicUrl : 'http://sc.111ttt.com/up/mp3/189448/4DCB7FA455A62CBDA811130E8725DDFB.mp3',
+                thumbMediaId : data.media_id
+            }
+        }else if(content === '7'){
+            var data = yield wechatApi.uploadMaterial('image',__dirname+'/2.jpg',{type : 'image'});
+            //console.log(data);
+            reply = {
+                type : 'image',
+                mediaId : data.media_id
+            }
+        }else if(content === '8'){
+            var data = yield wechatApi.uploadMaterial('video',__dirname+'/5.mp4',{type : 'video',description:'{"title":"Really nice a place","introduction":"Never think it so easy"}'});
+            //console.log(data);
+            reply = {
+                type : 'video',
+                title : '回复视频内容',
+                description : '小视频',
+                mediaId : data.media_id
+            }
         }
         this.body = reply;
     }

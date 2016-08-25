@@ -66,6 +66,9 @@ exports.tpl = function(content,message){
     if(content.type === 'video'){
         type = 'video';
     }
+    if(content.type === 'music'){
+        type = 'music';
+    }
     info.content = content;
     info.createTime = new Date().getTime();
     info.msgType = type;
