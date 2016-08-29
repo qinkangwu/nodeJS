@@ -91,6 +91,39 @@ exports.reply=function* (next){
                 description : '小视频',
                 mediaId : data.media_id
             }
+        }else if(content === '9'){
+            var picData = yield wechatApi.uploadMaterial('image',__dirname+'/2.jpg',{});
+
+            var media = {
+                articles:[
+                    {
+                        title : '秦康武',
+                        thumb_media_id: picData.mediaId,
+                        author : 'Kevin',
+                        digest : '这里是摘要',
+                        show_cover_pic : 1,
+                        content : '这里是内容',
+                        content_source_url : 'http://www.baidu.com'
+                    }
+                ]
+            };
+            //console.log(data);
+            data = yield wechatApi.uploadMaterial('news',media,{});
+            data = yield wechatApi.fetchMaterial(data.media_id,'news',{});
+            console.log(data);
+
+            var items = data.news_item;
+            var news = [];
+            console.log(items);
+            items.forEach(function(item){
+                news.push({
+                    title : item.title,
+                    description : item.digest,
+                    picUrl : picData.url,
+                    url : item.url
+                });
+            });
+            reply = news;
         }
         this.body = reply;
     }
